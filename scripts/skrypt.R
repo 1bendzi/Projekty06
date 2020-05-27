@@ -220,3 +220,12 @@ text(
 )
 legend("bottom", legend, cex=.65, text.col = "orange")
 dev.off()
+
+
+
+
+
+
+#Punkt 6 
+
+#analiza ukrytej alokacji Dirichlet'a
