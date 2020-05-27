@@ -4,7 +4,7 @@ library (hunspell)
 library (stringr)
 
 #zmiana katalogu roboczego 
-workDir <- "G:\\R-Project06\\Projekty06"
+workDir <- "C:\\Users\\Beniamin\\Desktop\\Git\\Projekty06"
 setwd(workDir)
 
 
@@ -90,3 +90,71 @@ preprocessedDir <- paste(
 )
 dir.create(preprocessedDir)
 writeCorpus(corpus, path = preprocessedDir)
+
+#usuniêcie rozszerzeñ z nazw dokumentów
+cutExtensions <- function(document) {
+  meta(document, "id") <- gsub(pattern = "\\.txt$", "", meta(document, "id"))
+  return(document)
+}
+
+corpus <- tm_map(corpus, cutExtensions)
+
+#utworzenie macierzy czêstoœci
+tdmTfAll <- TermDocumentMatrix(corpus)
+dtmTfAll <- DocumentTermMatrix(corpus)
+tdmTfidfAll <- TermDocumentMatrix(
+  corpus,
+  control = list(
+    weighting = weightTfIdf
+  )
+)
+tdmBinAll <- TermDocumentMatrix(
+  corpus,
+  control = list(
+    weighting = weightBin
+  )
+)
+tdmTfBounds <- TermDocumentMatrix(
+  corpus,
+  control = list(
+    bounds = list(
+      global = c(2,16)
+    )
+  )
+)
+tdmTfidfBounds <- TermDocumentMatrix(
+  corpus,
+  control = list(
+    weighting = weightTfIdf,
+    bounds = list(
+      global = c(2,16)
+    )
+  )
+)
+dtmTfidfBounds <- DocumentTermMatrix(
+  corpus,
+  control = list(
+    weighting = weightTfIdf,
+    bounds = list(
+      global = c(2,16)
+    )
+  )
+)
+
+#konwersja macierzy ¿adkich do macierzy klasycznych
+tdmTfAllMatrix <- as.matrix(tdmTfAll)
+dtmTfAllMatrix <- as.matrix(dtmTfAll)
+tdmTfidfAllMatrix <- as.matrix(tdmTfidfAll)
+tdmBinAllMatrix <- as.matrix(tdmBinAll)
+tdmTfBoundsMatrix <- as.matrix(tdmTfBounds)
+tdmTfidfBoundsMatrix <- as.matrix(tdmTfidfBounds)
+dtmTfidfBoundsMatrix <- as.matrix(dtmTfidfBounds)
+
+#eksport macirzy do pliku .csv
+#matrixFile <- paste(
+#  outputDir,
+#  "\\",
+#  "tdmTfidfBounds.csv",
+#  sep = ""
+#)
+#write.table(tdmTfidfBoundsMatrix, file = matrixFile, sep = ";", dec = ",", col.names = NA)
