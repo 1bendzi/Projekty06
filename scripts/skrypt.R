@@ -151,10 +151,11 @@ tdmTfidfBoundsMatrix <- as.matrix(tdmTfidfBounds)
 dtmTfidfBoundsMatrix <- as.matrix(dtmTfidfBounds)
 
 #eksport macirzy do pliku .csv
-#matrixFile <- paste(
-#  outputDir,
-#  "\\",
-#  "tdmTfidfBounds.csv",
-#  sep = ""
-#)
-#write.table(tdmTfidfBoundsMatrix, file = matrixFile, sep = ";", dec = ",", col.names = NA)
+matrixFile <- paste(
+  outputDir,
+  "\\",
+ "tdmTfidfBounds(2,16).csv",
+  sep = ""
+)
+write.table(tdmTfidfBoundsMatrix, file = matrixFile, sep = ";", dec = ",", col.names = NA)
+
