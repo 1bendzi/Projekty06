@@ -58,6 +58,10 @@ corpus <- tm_map(corpus, stripWhitespace)
 removeChar <- content_transformer(function(x,pattern) gsub(pattern, "", x))
 corpus <- tm_map(corpus, removeChar, intToUtf8(8722))
 corpus <- tm_map(corpus, removeChar, intToUtf8(190))
+corpus <- tm_map(corpus, removeChar, "„")
+corpus <- tm_map(corpus, removeChar, "”")
+corpus <- tm_map(corpus, removeChar, "«")
+
 
 
 #wstepne przetwarzanie: lemantyzacja
@@ -97,16 +101,16 @@ writeCorpus(corpus, path = preprocessedDir)
 
 
 #Macierz czestosci - PUNKT 4          
-
-#w³¹czenie bibliotek
+#za³adowanie bibliotek
 library(tm)
+library(stringr)
 
-#utworzenie korpusu dokumentów
+
+#utworzenie korpusu dokmentów
 corpusDir <- paste(
-  inputDir,
-  "\\",
-  "Literatura - streszczenia - przetworzone",
-  sep = ""
+  inputDir, 
+  "Literatura - przetworzone",
+  sep = "\\"
 )
 corpus <- VCorpus(
   DirSource(
@@ -119,75 +123,86 @@ corpus <- VCorpus(
   )
 )
 
-#usuniêcie rozszerzeñ z nazw dokumentów
-cutExtensions <- function(document) {
-  meta(document, "id") <- gsub(pattern = "\\.txt$", "", meta(document, "id"))
+#usuniêcie rozszerzeñ z nazw plików w korpusie
+cutExtensions <- function(document){
+  meta(document, "id") <- gsub(pattern = "\\.txt$", replacement = "", meta(document, "id"))
   return(document)
 }
-
 corpus <- tm_map(corpus, cutExtensions)
 
-
-#utworzenie macierzy czêstoœci
+#utworzenie macierzy czêstosci
 tdmTfAll <- TermDocumentMatrix(corpus)
 dtmTfAll <- DocumentTermMatrix(corpus)
-tdmTfidfAll <- TermDocumentMatrix(
-  corpus,
-  control = list(
-    weighting = weightTfIdf
-  )
-)
 tdmBinAll <- TermDocumentMatrix(
-  corpus,
+  corpus, 
   control = list(
     weighting = weightBin
   )
 )
+tdmTfidfAll <- TermDocumentMatrix(
+  corpus, 
+  control = list(
+    weighting = weightTfIdf
+  )
+)
 tdmTfBounds <- TermDocumentMatrix(
-  corpus,
+  corpus, 
   control = list(
     bounds = list(
-      global = c(2,16)
+      global = c(10,19)
     )
   )
 )
 tdmTfidfBounds <- TermDocumentMatrix(
-  corpus,
+  corpus, 
   control = list(
     weighting = weightTfIdf,
     bounds = list(
-      global = c(2,16)
+      global = c(10,19)
     )
   )
 )
 dtmTfidfBounds <- DocumentTermMatrix(
-  corpus,
+  corpus, 
   control = list(
     weighting = weightTfIdf,
     bounds = list(
-      global = c(2,16)
+      global = c(10,19)
+    )
+  )
+)
+dtmTfBounds <- DocumentTermMatrix(
+  corpus, 
+  control = list(
+    bounds = list(
+      global = c(10,19)
     )
   )
 )
 
-#konwersja macierzy ¿adkich do macierzy klasycznych
+#konwersja macirzy rzadkich do macierzy klasycznch
 tdmTfAllMatrix <- as.matrix(tdmTfAll)
 dtmTfAllMatrix <- as.matrix(dtmTfAll)
-tdmTfidfAllMatrix <- as.matrix(tdmTfidfAll)
 tdmBinAllMatrix <- as.matrix(tdmBinAll)
+tdmTfidfAllMatrix <- as.matrix(tdmTfidfAll)
 tdmTfBoundsMatrix <- as.matrix(tdmTfBounds)
 tdmTfidfBoundsMatrix <- as.matrix(tdmTfidfBounds)
 dtmTfidfBoundsMatrix <- as.matrix(dtmTfidfBounds)
+dtmTfBoundsMAtrix <- as.matrix(dtmTfBounds)
 
-#eksport macirzy do pliku .csv
+#eksport macirzy czêstoœci do pliku .csv
 matrixFile <- paste(
-  outputDir,
-  "\\",
-  "tdmTfidfBounds(2,16).csv",
-  sep = ""
+  outputDir, 
+  "tdmTfidf(10,19).csv",
+  sep = "\\"
 )
-write.table(tdmTfidfBoundsMatrix, file = matrixFile, sep = ";", dec = ",", col.names = NA)
-
+write.table(
+ tdmTfidfBoundsMatrix,
+ file = matrixFile,
+ sep = ";",
+ dec = ",",
+ col.names = NA
+)
 
 
 
