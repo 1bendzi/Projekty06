@@ -4,7 +4,7 @@ library (hunspell)
 library (stringr)
 
 #zmiana katalogu roboczego 
-workDir <- "C:\\Users\\Beniamin\\Desktop\\Git\\Projekty06"
+workDir <- "G:\\R-Project06\\Projekty06"
 setwd(workDir)
 
 
@@ -36,6 +36,8 @@ corpus <- VCorpus(
   )
 )
 
+View(corpus)
+
 #wstepne przetwarzanie: usuniêcie z podzia³u na akapity
 pasteParagraphs <- content_transformer(function(x,char) paste(x, collapse = char))
 corpus <- tm_map(corpus, pasteParagraphs, " ")
@@ -54,15 +56,16 @@ stoplist <- readLines(stoplistFile, encoding = "UTF-8")
 corpus <- tm_map(corpus, removeWords, stoplist)
 corpus <- tm_map(corpus, stripWhitespace)
 
-#wstepne przetwarzanie: usuniecie em dash i 3/4
+#wstepne przetwarzanie: usuniecie znakow psujacych macierze 
 removeChar <- content_transformer(function(x,pattern) gsub(pattern, "", x))
 corpus <- tm_map(corpus, removeChar, intToUtf8(8722))
 corpus <- tm_map(corpus, removeChar, intToUtf8(190))
 corpus <- tm_map(corpus, removeChar, "„")
 corpus <- tm_map(corpus, removeChar, "”")
+corpus <- tm_map(corpus, removeChar, "\"")
 corpus <- tm_map(corpus, removeChar, "«")
-
-
+corpus <- tm_map(corpus, removeChar, "—")
+corpus <- tm_map(corpus, removeChar, "…")
 
 #wstepne przetwarzanie: lemantyzacja
 polish <- dictionary(lang="pl_PL")
@@ -102,6 +105,8 @@ writeCorpus(corpus, path = preprocessedDir)
 
 #Macierz czestosci - PUNKT 4          
 #za³adowanie bibliotek
+
+#tego nie powinno byc
 library(tm)
 library(stringr)
 
@@ -149,7 +154,7 @@ tdmTfBounds <- TermDocumentMatrix(
   corpus, 
   control = list(
     bounds = list(
-      global = c(2,16)
+      global = c(2,19)
     )
   )
 )
@@ -158,7 +163,7 @@ tdmTfidfBounds <- TermDocumentMatrix(
   control = list(
     weighting = weightTfIdf,
     bounds = list(
-      global = c(2,16)
+      global = c(2,14)
     )
   )
 )
@@ -167,7 +172,7 @@ dtmTfidfBounds <- DocumentTermMatrix(
   control = list(
     weighting = weightTfIdf,
     bounds = list(
-      global = c(2,16)
+      global = c(2,19)
     )
   )
 )
@@ -175,7 +180,7 @@ dtmTfBounds <- DocumentTermMatrix(
   corpus, 
   control = list(
     bounds = list(
-      global = c(2,16)
+      global = c(2,14)
     )
   )
 )
@@ -193,18 +198,55 @@ dtmTfBoundsMAtrix <- as.matrix(dtmTfBounds)
 #eksport macirzy czêstoœci do pliku .csv
 matrixFile <- paste(
   outputDir, 
-  "tdmTfidf(2,16).csv",
+  "tdmTfidf.csv",
   sep = "\\"
 )
 write.table(
- tdmTfidfBoundsMatrix,
+ tdmTfidfAllMatrix,
  file = matrixFile,
  sep = ";",
  dec = ",",
  col.names = NA
 )
 
+matrixFile1 <- paste(
+  outputDir, 
+  "tdmTfBoundsMatrix(2,19).csv",
+  sep = "\\"
+)
+write.table(
+  tdmTfBoundsMatrix,
+  file = matrixFile1,
+  sep = ";",
+  dec = ",",
+  col.names = NA
+)
 
+matrixFile2 <- paste(
+  outputDir, 
+  "tdmTfidfBounds(2,14).csv",
+  sep = "\\"
+)
+write.table(
+  tdmTfidfBoundsMatrix,
+  file = matrixFile1,
+  sep = ";",
+  dec = ",",
+  col.names = NA
+)
+
+matrixFile2 <- paste(
+  outputDir, 
+  "tdmTfidfBounds(2,14).csv",
+  sep = "\\"
+)
+write.table(
+  tdmTfidfBoundsMatrix,
+  file = matrixFile1,
+  sep = ";",
+  dec = ",",
+  col.names = NA
+)
 
 
 
@@ -228,12 +270,11 @@ legend <- paste(
 plot(
   x,
   y,
-  #xlim = c(-0.5,-0.2),
-  #ylim = c(-0.2,0.1),
+  xlim = c(-0.30,0.25),
   xlab="Wspó³rzêdna syntetyczna 1", 
   ylab="Wspó³rzêdna syntetyczna 2",
   main="Analiza g³ównych sk³adowych", 
-  col = "orange"
+  col = "blue"
 )
 text(
   x, 
@@ -242,7 +283,7 @@ text(
   pos = 3,
   col = "orange"
 )
-legend("bottom", legend, cex=.5, text.col = "orange")
+legend("bottom", legend, cex=.7, text.col = "blue")
 
 #eksport wykresu do pliku .png
 plotFile <- paste(
@@ -255,19 +296,20 @@ png(file = plotFile)
 plot(
   x,
   y,
+  ylim = c(-0.25,0.25),
   xlab="Wspó³rzêdna syntetyczna 1", 
   ylab="Wspó³rzêdna syntetyczna 2",
   main="Analiza g³ównych sk³adowych", 
-  col = "orange"
+  col = "blue"
 )
 text(
   x, 
   y, 
   labels = paste("d", 1:length(rownames(dtmTfidfBoundsMatrix)),sep = ""), 
   pos = 3,
-  col = "orange"
+  col = "blue"
 )
-legend("bottom", legend, cex=.65, text.col = "orange")
+legend("bottom", legend, cex=.65, text.col = "blue")
 dev.off()
 
 
