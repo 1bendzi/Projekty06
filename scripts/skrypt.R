@@ -417,7 +417,7 @@ legend("bottomleft", legend, cex = 0.5, text.col = "orange")
 dev.off()
 
 
-# PUNKT 6  (poki co wklejony kod, nic nie zmieniane)
+# PUNKT 6  
 
 #w³¹czenie bibliotek
 library(proxy)
@@ -434,13 +434,15 @@ library(flexclust)
 # 2. miara odleg³oœci (euclidean, jaccard, cosine)
 # 3. sposób wyznaczania odleg³oœci pomiedzy skupieniami (single, complete, ward.D2)
 
-par(mai = c(1,2,1,1))
+# najelpsze metody : cosine i ward.D2
+
+par(mai = c(1,2,1,1))  #marginesy 
 nDocuments = 19
 #eksperyment 1
-distMatrix1 <- dist(dtmTfAllMatrix, method = "euclidean")
-hclust1 <- hclust(distMatrix1, method = "ward.D2")
+distMatrix1 <- dist(dtmTfAllMatrix, method = "euclidean") #te metode mozemy zmienic
+hclust1 <- hclust(distMatrix1, method = "ward.D2") #te metode mozemy zmienic
 plot(hclust1)
-barplot(hclust1$height, names.arg = 18:1)
+barplot(hclust1$height, names.arg = 18:1) # po tym okreslic ile nClusters 
 nClusters1 = 5
 clusters1 <- cutree(hclust1, k=nClusters1)
 clustersMatrix1 <- matrix(0,nDocuments,nClusters1)
@@ -633,7 +635,7 @@ round(results$terms[,words2],2)
 
 
 
-#P U N K T    8      (wklejony kod tylko)
+#P U N K T    8     (do ) 
 #w³¹czenie bibliotek
 library(wordcloud)
 
@@ -644,16 +646,190 @@ library(wordcloud)
 keywordsTf1 <- head(sort(dtmTfAllMatrix[1,], decreasing = T))
 keywordsTf1
 
+keywordsTf2 <- head(sort(dtmTfAllMatrix[2,], decreasing = T))
+keywordsTf2
+
+keywordsTf3 <- head(sort(dtmTfAllMatrix[3,], decreasing = T))
+keywordsTf3
+
+keywordsTf4 <- head(sort(dtmTfAllMatrix[4,], decreasing = T))
+keywordsTf4
+
+keywordsTf5 <- head(sort(dtmTfAllMatrix[5,], decreasing = T))
+keywordsTf5
+
+keywordsTf6 <- head(sort(dtmTfAllMatrix[6,], decreasing = T))
+keywordsTf6
+
+keywordsTf7 <- head(sort(dtmTfAllMatrix[7,], decreasing = T))
+keywordsTf7
+
+keywordsTf8 <- head(sort(dtmTfAllMatrix[8,], decreasing = T))
+keywordsTf8
+
+keywordsTf9 <- head(sort(dtmTfAllMatrix[9,], decreasing = T))
+keywordsTf9
+
+keywordsTf10 <- head(sort(dtmTfAllMatrix[10,], decreasing = T))
+keywordsTf10
+
+keywordsTf11 <- head(sort(dtmTfAllMatrix[11,], decreasing = T))
+keywordsTf11
+
+keywordsTf12 <- head(sort(dtmTfAllMatrix[12,], decreasing = T))
+keywordsTf12
+
+keywordsTf13 <- head(sort(dtmTfAllMatrix[13,], decreasing = T))
+keywordsTf13
+
+keywordsTf14 <- head(sort(dtmTfAllMatrix[14,], decreasing = T))
+keywordsTf14
+
+keywordsTf15 <- head(sort(dtmTfAllMatrix[15,], decreasing = T))
+keywordsTf15
+
+keywordsTf16 <- head(sort(dtmTfAllMatrix[16,], decreasing = T))
+keywordsTf16
+
+keywordsTf17 <- head(sort(dtmTfAllMatrix[17,], decreasing = T))
+keywordsTf17
+
+keywordsTf18 <- head(sort(dtmTfAllMatrix[18,], decreasing = T))
+keywordsTf18
+
+keywordsTf19 <- head(sort(dtmTfAllMatrix[19,], decreasing = T))
+keywordsTf19
+
+keywordsTf20 <- head(sort(dtmTfAllMatrix[20,], decreasing = T))
+keywordsTf20
+
+
 ##waga tfidf jako miara wa¿noœci s³ów
 keywordsTfidf1 <- head(sort(dtmTfidfBoundsMatrix[1,], decreasing = T))
 keywordsTfidf1
 
-##prawdopodobieñstwo w LDA jako miara wa¿noœci s³ów
+keywordsTfidf2 <- head(sort(dtmTfidfBoundsMatrix[2,], decreasing = T))
+keywordsTfidf2
+
+keywordsTfidf3 <- head(sort(dtmTfidfBoundsMatrix[3,], decreasing = T))
+keywordsTfidf3
+
+keywordsTfidf4 <- head(sort(dtmTfidfBoundsMatrix[4,], decreasing = T))
+keywordsTfidf4
+
+keywordsTfidf5 <- head(sort(dtmTfidfBoundsMatrix[5,], decreasing = T))
+keywordsTfidf5
+
+keywordsTfidf6 <- head(sort(dtmTfidfBoundsMatrix[6,], decreasing = T))
+keywordsTfidf6
+
+keywordsTfidf7 <- head(sort(dtmTfidfBoundsMatrix[7,], decreasing = T))
+keywordsTfidf7
+
+keywordsTfidf8 <- head(sort(dtmTfidfBoundsMatrix[8,], decreasing = T))
+keywordsTfidf8
+
+keywordsTfidf9 <- head(sort(dtmTfidfBoundsMatrix[9,], decreasing = T))
+keywordsTfidf9
+
+keywordsTfidf10 <- head(sort(dtmTfidfBoundsMatrix[10,], decreasing = T))
+keywordsTfidf10
+
+keywordsTfidf11 <- head(sort(dtmTfidfBoundsMatrix[11,], decreasing = T))
+keywordsTfidf11
+
+keywordsTfidf12 <- head(sort(dtmTfidfBoundsMatrix[12,], decreasing = T))
+keywordsTfidf12
+
+keywordsTfidf13 <- head(sort(dtmTfidfBoundsMatrix[13,], decreasing = T))
+keywordsTfidf13
+
+keywordsTfidf14 <- head(sort(dtmTfidfBoundsMatrix[14,], decreasing = T))
+keywordsTfidf14
+
+keywordsTfidf15 <- head(sort(dtmTfidfBoundsMatrix[15,], decreasing = T))
+keywordsTfidf15
+
+keywordsTfidf16 <- head(sort(dtmTfidfBoundsMatrix[16,], decreasing = T))
+keywordsTfidf16
+
+keywordsTfidf17 <- head(sort(dtmTfidfBoundsMatrix[17,], decreasing = T))
+keywordsTfidf17
+
+keywordsTfidf18 <- head(sort(dtmTfidfBoundsMatrix[18,], decreasing = T))
+keywordsTfidf18
+
+keywordsTfidf19 <- head(sort(dtmTfidfBoundsMatrix[19,], decreasing = T))
+keywordsTfidf19
+
+keywordsTfidf20 <- head(sort(dtmTfidfBoundsMatrix[20,], decreasing = T))
+keywordsTfidf20
+
+##prawdopodobieñstwo w LDA jako miara wa¿noœci s³ów 
+#(tu dopisze jak bedziemy mieli ogarniete LDA, bo nie bardzo moge to wytestowac teraz)
 termsImportance1 <- c(results$topics[1,]%*%results$terms)
 names(termsImportance1) <- colnames(results$terms)
 keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
 keywordsLda1
 
+
 ##chmury tagów
 par(mai = c(0,0,0,0))
 wordcloud(corpus[1], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[2], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[3], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[4], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[5], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[6], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[7], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[8], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[9], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[10], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[11], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[12], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[13], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[14], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[15], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[16], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[17], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[18], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[19], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+par(mai = c(0,0,0,0))
+wordcloud(corpus[20], max.words = 200, colors = brewer.pal(8,"PuOr"))
