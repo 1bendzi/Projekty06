@@ -309,8 +309,9 @@ lsa$sk #odpowiednik macierzy D, znaczenie sk³adowych
 coordTerms <- lsa$tk%*%diag(lsa$sk)
 coorDocs <- lsa$dk%*%diag(lsa$sk)
 
+
+terms <- c("achilles", "troja", "itaka", "pryjam", "italia", "wiedŸmin", "geralt", "ciri", "yennefer", "jaskier", "szlachta", "zag³oba", "micha³", "waszmoœæ", "waœæ", "frodo", "mordor", "gandalf", "saurona", "baggins", "telefon", "kosmicznej", "robot", "helikopter", "astronomii")
 termsImportance <- diag(lsa$tk%*%diag(lsa$sk)%*%t(diag(lsa$sk))%*%t(lsa$tk))
-terms <- c("achilles", "troja", "itaka", "pryjam", "italia", "wiedŸmin", "geralt", "ciri", "yennefer", "jaskier", "szlachta", "zagloba", "michal", "waszmosc", "wasc", "frodo", "mordor", "gandalf", "saurona", "baggins", "telefon", "kosmicznej", "robot", "helikopter", "astronomii")
 importantTerms <- names(tail(sort(termsImportance),25))
 
 #zale¿nie od preferencji wybrac mozna importantTerms jak i terms znalezione przez nas, gdy¿ jest ona bardziej wiarygodna
@@ -321,7 +322,7 @@ y1 <- coorDocs[,2]
 x2 <- coordTerms[,1]
 y2 <- coordTerms[,2]
 
-#wykres dokumentow i wybranych slow w przestrzeni dwuwymiatowej
+#wykres dokumentow i wybranych slow w przestrzeni dwuwymiatowej2222
 options(scipen = 5)
 plot(
   x1, 
@@ -492,18 +493,12 @@ randEx3Pattern <- randIndex(kmeans3$cluster, pattern, F)
 randEx3Pattern
 
 
-
-
-
-
 #Punkt 7 (wklejony kod, nic nie zmieniane) LDA 
 
 #analiza ukrytej alokacji Dirichlet'a
 
 #wlaczenie bibliotek
 library(topicmodels)
-
-
 
 #analiza ukrytej alokacji Dirichlet'a
 nWords <- ncol(dtmTfAll)
@@ -531,7 +526,7 @@ barplot(
   rev(topic1), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 1",
+  main = "Wiedzmin - Czas Pogardy",
   xlab = "Prawdopodobienstwo 1",
   col = "blue"
 )
@@ -558,7 +553,7 @@ barplot(
   rev(topic4), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 4",
+  main = "Sienkiewicz - Zag³oba",
   xlab = "Prawdopodobienstwo 4",
   col = "lightskyblue"
 )
@@ -567,7 +562,7 @@ barplot(
   rev(topic5), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 5",
+  main = "Antyk - ",
   xlab = "Prawdopodobienstwo5",
   col = "darkseagreen"
 )
@@ -786,7 +781,7 @@ library(wordcloud)
 
 
 #dla pierwszego dokumentu
-##waga tf jako miara waï¿½noï¿½ci sï¿½ï¿½w
+##waga tf jako miara waznosci slow
 keywordsTf1 <- head(sort(dtmTfAllMatrix[1,], decreasing = T))
 keywordsTf1
 
@@ -909,7 +904,7 @@ keywordsTfidf19
 keywordsTfidf20 <- head(sort(dtmTfidfBoundsMatrix[20,], decreasing = T))
 keywordsTfidf20
 
-##prawdopodobieï¿½stwo w LDA jako miara waï¿½noï¿½ci sï¿½ï¿½w 
+##prawdopodobienstwo w LDA jako miara waznoscislow
 #(tu dopisze jak bedziemy mieli ogarniete LDA, bo nie bardzo moge to wytestowac teraz)
 termsImportance1 <- c(results$topics[1,]%*%results$terms)
 names(termsImportance1) <- colnames(results$terms)
@@ -922,7 +917,7 @@ keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
 keywordsLda1
 
 
-##chmury tagï¿½w
+##chmury tagow
 par(mai = c(0,0,0,0))
 wordcloud(corpus[1], max.words = 200, colors = brewer.pal(8,"PuOr"))
 
