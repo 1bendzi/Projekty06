@@ -593,6 +593,36 @@ barplot(
 )
 
 #prezentacja dokumentów
+document1 <- results$topics[1,]
+barplot(
+  rev(document1), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[1],
+  xlab = "Prawdopodobieñstwo",
+  col = "darkseagreen"
+)
+
+document2 <- results$topics[2,]
+barplot(
+  rev(document2), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[2],
+  xlab = "Prawdopodobieñstwo",
+  col = "darkseagreen"
+)
+
+document3 <- results$topics[3,]
+barplot(
+  rev(document3), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[3],
+  xlab = "Prawdopodobieñstwo",
+  col = "darkseagreen"
+)
+
 document4 <- results$topics[4,]
 barplot(
   rev(document4), 
@@ -600,7 +630,67 @@ barplot(
   las = 1, 
   main = rownames(results$topics)[4],
   xlab = "Prawdopodobieñstwo",
+  col = "darkseagreen"
+)
+
+document5 <- results$topics[5,]
+barplot(
+  rev(document5), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[5],
+  xlab = "Prawdopodobieñstwo",
+  col = "lightskyblue"
+)
+
+document6 <- results$topics[6,]
+barplot(
+  rev(document6), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[6],
+  xlab = "Prawdopodobieñstwo",
   col = "orange"
+)
+
+document7 <- results$topics[7,]
+barplot(
+  rev(document7), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[7],
+  xlab = "Prawdopodobieñstwo",
+  col = "lightskyblue"
+)
+
+document8 <- results$topics[8,]
+barplot(
+  rev(document8), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[8],
+  xlab = "Prawdopodobieñstwo",
+  col = "orange"
+)
+
+document9 <- results$topics[9,]
+barplot(
+  rev(document9), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[9],
+  xlab = "Prawdopodobieñstwo",
+  col = "violet"
+)
+
+document10 <- results$topics[10,]
+barplot(
+  rev(document10), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[10],
+  xlab = "Prawdopodobieñstwo",
+  col = "violet"
 )
 
 document11 <- results$topics[11,]
@@ -610,7 +700,57 @@ barplot(
   las = 1, 
   main = rownames(results$topics)[11],
   xlab = "Prawdopodobieñstwo",
-  col = "turquoise"
+  col = "violet"
+)
+
+document12 <- results$topics[12,]
+barplot(
+  rev(document12), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[12],
+  xlab = "Prawdopodobieñstwo",
+  col = "violet"
+)
+
+document13 <- results$topics[13,]
+barplot(
+  rev(document13), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[13],
+  xlab = "Prawdopodobieñstwo",
+  col = "lightskyblue"
+)
+
+document14 <- results$topics[14,]
+barplot(
+  rev(document14), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[14],
+  xlab = "Prawdopodobieñstwo",
+  col = "lightskyblue"
+)
+
+document15 <- results$topics[15,]
+barplot(
+  rev(document15), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[15],
+  xlab = "Prawdopodobieñstwo",
+  col = "orange"
+)
+
+document16 <- results$topics[16,]
+barplot(
+  rev(document16), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[16],
+  xlab = "Prawdopodobieñstwo",
+  col = "lightskyblue"
 )
 
 document17 <- results$topics[17,]
@@ -620,16 +760,40 @@ barplot(
   las = 1, 
   main = rownames(results$topics)[17],
   xlab = "Prawdopodobieñstwo",
-  col = "violet"
+  col = "turquoise"
 )
 
-#udzia³ tematów w s³owach
-#tutaj na pewno do zmiany
-words1<- c("czarodziej", "czarownica", "wampir")
-round(results$terms[,words1],2)
+document18 <- results$topics[18,]
+barplot(
+  rev(document18), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[18],
+  xlab = "Prawdopodobieñstwo",
+  col = "orange"
+)
 
-words2<- c("harry", "³ucja", "bell")
-round(results$terms[,words2],2)
+document19 <- results$topics[19,]
+barplot(
+  rev(document19), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[19],
+  xlab = "Prawdopodobieñstwo",
+  col = "turquoise"
+)
+
+document20 <- results$topics[20,]
+barplot(
+  rev(document20), 
+  horiz = TRUE,
+  las = 1, 
+  main = rownames(results$topics)[20],
+  xlab = "Prawdopodobieñstwo",
+  col = "turquoise"
+)
+
+
 
 
 
@@ -767,6 +931,11 @@ keywordsTfidf20
 
 ##prawdopodobieñstwo w LDA jako miara wa¿noœci s³ów 
 #(tu dopisze jak bedziemy mieli ogarniete LDA, bo nie bardzo moge to wytestowac teraz)
+termsImportance1 <- c(results$topics[1,]%*%results$terms)
+names(termsImportance1) <- colnames(results$terms)
+keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
+keywordsLda1
+
 termsImportance1 <- c(results$topics[1,]%*%results$terms)
 names(termsImportance1) <- colnames(results$terms)
 keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
