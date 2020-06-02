@@ -1,20 +1,20 @@
-#wÅ‚Ä…czenie bibliotek 
+#wlaczenie bibliotek 
 library(tm) 
 library (hunspell)
 library (stringr)
+library(lsa)
 
 #zmiana katalogu roboczego 
-workDir <- "C:\\ProjektR\\Projekty06"
+
+workDir <- "G:\\R-Project06\\Projekty06"
 setwd(workDir)
 
-
 #definicja katalogow projektu
+
 inputDir <- ".\\data"
 outputDir <- ".\\results"
 scriptsDir <- ".\\scripts"
 workspaceDir <- ".\\workspaces"
-
-
 dir.create(outputDir, showWarnings = FALSE)
 dir.create(workspaceDir, showWarnings = FALSE)
 
@@ -24,7 +24,6 @@ corpusDir <- paste(
   "Literatura - oryginal",
   sep = "\\"
 )
-
 corpus <- VCorpus(
   DirSource(
     corpusDir,
@@ -35,10 +34,9 @@ corpus <- VCorpus(
     language = "pl_PL"
   )
 )
-
 View(corpus)
 
-#wstepne przetwarzanie: usuniï¿½cie z podziaï¿½u na akapity
+#wstepne przetwarzanie: usuniecie z podzia3u na akapity
 pasteParagraphs <- content_transformer(function(x,char) paste(x, collapse = char))
 corpus <- tm_map(corpus, pasteParagraphs, " ")
 
@@ -60,15 +58,15 @@ corpus <- tm_map(corpus, stripWhitespace)
 removeChar <- content_transformer(function(x,pattern) gsub(pattern, "", x))
 corpus <- tm_map(corpus, removeChar, intToUtf8(8722))
 corpus <- tm_map(corpus, removeChar, intToUtf8(190))
-corpus <- tm_map(corpus, removeChar, "ï¿½")
-corpus <- tm_map(corpus, removeChar, "ï¿½")
+corpus <- tm_map(corpus, removeChar, "„")
+corpus <- tm_map(corpus, removeChar, "”")
 corpus <- tm_map(corpus, removeChar, "\"")
-corpus <- tm_map(corpus, removeChar, "ï¿½")
-corpus <- tm_map(corpus, removeChar, "ï¿½")
-corpus <- tm_map(corpus, removeChar, "ï¿½")
+corpus <- tm_map(corpus, removeChar, "«")
+corpus <- tm_map(corpus, removeChar, "—")
+corpus <- tm_map(corpus, removeChar, "…")
 
 #wstepne przetwarzanie: lemantyzacja
-polish <- dictionary(lang="pl")
+polish <- dictionary(lang="pl_PL")
 lemmatize <- function(text) {
   simpleText <- str_trim(as.character(text))
   parsedText <- strsplit(simpleText, split = " ")
@@ -81,15 +79,13 @@ lemmatize <- function(text) {
   return(newText)
 }
 corpus <- tm_map(corpus, content_transformer(lemmatize))
-
 #wstepne przetwarzanie: usuniecie rozszerzen
 cutExtensions <- function(document){
   meta(document, "id") <- gsub(pattern = "\\.txt$", replacement = "", meta(document, "id"))
   return(document)
 }
 corpus <- tm_map(corpus, cutExtensions)
-
-#eksport korpusu przetworzonego do plikï¿½w tekstowych
+#eksport korpusu przetworzonego do plików tekstowych
 preprocessedDir <- paste(
   outputDir,
   "\\",
@@ -100,18 +96,8 @@ dir.create(preprocessedDir, showWarnings = FALSE)
 writeCorpus(corpus, path = preprocessedDir)
 
 
-
-
-
 #Macierz czestosci - PUNKT 4          
-#zaï¿½adowanie bibliotek
-
-#tego nie powinno byc
-library(tm)
-library(stringr)
-
-
-#utworzenie korpusu dokmentï¿½w
+#utworzenie korpusu dokmentow
 corpusDir <- paste(
   inputDir, 
   "Literatura - przetworzone",
@@ -128,14 +114,14 @@ corpus <- VCorpus(
   )
 )
 
-#usuniï¿½cie rozszerzeï¿½ z nazw plikï¿½w w korpusie
+#usuniecie rozszezen z nazw plikow w korpusie
 cutExtensions <- function(document){
   meta(document, "id") <- gsub(pattern = "\\.txt$", replacement = "", meta(document, "id"))
   return(document)
 }
 corpus <- tm_map(corpus, cutExtensions)
 
-#utworzenie macierzy czï¿½stosci
+#utworzenie macierzy czestosci
 tdmTfAll <- TermDocumentMatrix(corpus)
 dtmTfAll <- DocumentTermMatrix(corpus)
 tdmBinAll <- TermDocumentMatrix(
@@ -195,7 +181,7 @@ tdmTfidfBoundsMatrix <- as.matrix(tdmTfidfBounds)
 dtmTfidfBoundsMatrix <- as.matrix(dtmTfidfBounds)
 dtmTfBoundsMAtrix <- as.matrix(dtmTfBounds)
 
-#eksport macirzy czï¿½stoï¿½ci do pliku .csv
+#eksport macirzy czestosci do pliku .csv
 matrixFile <- paste(
   outputDir, 
   "tdmTfidf.csv",
@@ -251,10 +237,9 @@ write.table(
 
 
 #Redukcja wymiarow  -    PUNKT 5
-# P C A : 
-#tutaj zaczyna siï¿½ analiza glownych skladowych  (PCA)
+# PCA - analiza glownych skladowych
 
-#analiza gï¿½ï¿½wnych skï¿½adowych
+#analiza glownych skladowych
 pca <- prcomp(dtmTfidfBounds)
 x <- pca$x[,1]
 y <- pca$x[,2]
@@ -266,14 +251,15 @@ legend <- paste(
   sep = "<-"
 )
 
-#wykres dokumentï¿½w w przestrzeni dwuwymiarowej
+#wykres dokumentow w przestrzeni dwuwymiarowej
 plot(
   x,
   y,
   xlim = c(-0.30,0.25),
-  xlab="Wspï¿½rzï¿½dna syntetyczna 1", 
-  ylab="Wspï¿½rzï¿½dna syntetyczna 2",
-  main="Analiza gï¿½ï¿½wnych skï¿½adowych", 
+  ylim = c(-0.08, 0.1),
+  xlab="Wspó³rzêdna syntetyczna 1", 
+  ylab="Wspó³rzêdna syntetyczna 2",
+  main="Analiza g³ównych sk³adowych", 
   col = "red"
 )
 text(
@@ -297,9 +283,9 @@ plot(
   x,
   y,
   ylim = c(-0.25,0.25),
-  xlab="Wspï¿½rzï¿½dna syntetyczna 1", 
-  ylab="Wspï¿½rzï¿½dna syntetyczna 2",
-  main="Analiza gï¿½ï¿½wnych skï¿½adowych", 
+  xlab="Wspó³rzêdna syntetyczna 1", 
+  ylab="Wspó³rzêdna syntetyczna 2",
+  main="Analiza g³ównych sk³adowych", 
   col = "blue"
 )
 text(
@@ -312,35 +298,30 @@ text(
 legend("bottom", legend, cex=.65, text.col = "blue")
 dev.off()
 
-
 # L S A 
-#zaï¿½adowanie bibliotek
-library(lsa)
-
-
-#analiza ukrytych wymiarï¿½w semantycznych (dekompozycja wg. wartoï¿½ci osobliwych)
+#analiza ukrytych wymiarow semantycznych (dekompozycja wg. wartosci osobliwych)
 lsa <- lsa(tdmTfidfBoundsMatrix)
-lsa$tk #odpowiednik macierzy U, wspï¿½rzï¿½dne wyrazï¿½w
-lsa$dk #odpowiednik macierzy V, wspï¿½rzï¿½dne dokumentï¿½w
-lsa$sk #odpowiednik macierzy D, znaczenie skï¿½adowych
+lsa$tk #odpowiednik macierzy U, wspó³rzêdne wyrazów
+lsa$dk #odpowiednik macierzy V, wspó³rzêdne dokumentów
+lsa$sk #odpowiednik macierzy D, znaczenie sk³adowych
 
 #przygotowanie danych do wykresu
 coordTerms <- lsa$tk%*%diag(lsa$sk)
 coorDocs <- lsa$dk%*%diag(lsa$sk)
 
 termsImportance <- diag(lsa$tk%*%diag(lsa$sk)%*%t(diag(lsa$sk))%*%t(lsa$tk))
-terms <- c("achilles", "troja", "itaka", "pryjam", "italia", "wiedzmin", "geralt", "ciri", "yennefer", "jaskier", "szlachta", "zagloba", "michal", "waszmosc", "wasc", "frodo", "mordor", "gandalf", "hobbit", "baggins", "telefon", "kosmicznej", "robot", "helikopter", "astronomii")
+terms <- c("achilles", "troja", "itaka", "pryjam", "italia", "wiedŸmin", "geralt", "ciri", "yennefer", "jaskier", "szlachta", "zagloba", "michal", "waszmosc", "wasc", "frodo", "mordor", "gandalf", "saurona", "baggins", "telefon", "kosmicznej", "robot", "helikopter", "astronomii")
 importantTerms <- names(tail(sort(termsImportance),25))
 
-#zaleï¿½nie od preferencji wybrac mozna importantTerms jak i terms znalezione przez nas, gdyï¿½ jest ona bardziej wiarygodna
-coordTerms <- coordTerms[importantTerms,]
+#zale¿nie od preferencji wybrac mozna importantTerms jak i terms znalezione przez nas, gdy¿ jest ona bardziej wiarygodna
+coordTerms <- coordTerms[terms,]
 legend <- paste(paste("d", 1:20, sep = ""), rownames(coorDocs), sep = "<-")
 x1 <- coorDocs[,1]
 y1 <- coorDocs[,2]
 x2 <- coordTerms[,1]
 y2 <- coordTerms[,2]
 
-#wykres dokumentï¿½w i wybranych sï¿½ï¿½w w przestrzeni dwuwymiatowej
+#wykres dokumentow i wybranych slow w przestrzeni dwuwymiatowej
 options(scipen = 5)
 plot(
   x1, 
@@ -376,7 +357,7 @@ legend("topleft", legend, cex = 0.7, text.col = "blue")
 #eksport wykresu do pliku .png
 plotFile <- paste(
   outputDir, 
-  "lsa.png",
+  "lsaTerms.png",
   sep = "\\"
 )
 png(file = plotFile)
@@ -415,20 +396,20 @@ dev.off()
 
 # PUNKT 6  
 
-#wï¿½ï¿½czenie bibliotek
+#wlaczenie bibliotek
 library(proxy)
 library(dendextend)
 library(corrplot)
 library(flexclust)
 
-#analiza skupieï¿½
+#analiza skupien
 ##metoda hierarchiczna
 #parametry metody:
-# 1. macierz czï¿½stoï¿½ci:
+# 1. macierz czestosci:
 # a. waga (weighting)
 # b. zakres zmiennych (bounds)
-# 2. miara odlegï¿½oï¿½ci (euclidean, jaccard, cosine)
-# 3. sposï¿½b wyznaczania odlegï¿½oï¿½ci pomiedzy skupieniami (single, complete, ward.D2)
+# 2. miara odleglosci (euclidean, jaccard, cosine)
+# 3. sposob wyznaczania odleglosci pomiedzy skupieniami (single, complete, ward.D2)
 
 # najelpsze metody : cosine i ward.D2
 
@@ -474,7 +455,7 @@ dendrogram2 <- as.dendrogram(hclust2)
 coloredDendrogram2 <- color_branches(dendrogram2, h = 1.2)
 plot(coloredDendrogram2)
 
-#porï¿½wnanie wynikï¿½w eksperymentï¿½w
+#porownanie wynikow eksperymentow
 Bk_plot(
   dendrogram1,
   dendrogram2,
@@ -486,10 +467,10 @@ Bk_plot(
 
 ##metoda niehierarchiczna
 #parametry metody:
-# 1. macierz czï¿½stoï¿½ci:
+# 1. macierz czesttosci:
 # a. waga (weighting)
 # b. zakres zmiennych (bounds)
-# 2. zakï¿½adana liczba skupieï¿½
+# 2. zakladana liczba skupien
 
 #eksperyment 3
 nClusters3 <- 3
@@ -501,8 +482,8 @@ for (i in 1:nDocuments) {
 }
 corrplot(clustersMatrix3)
 
-#wspï¿½czynnik zbieï¿½noï¿½ci podziaï¿½ï¿½w przy zadanej liczbie skupieï¿½
-##dla 3 skupieï¿½
+#wspolczynnik zbieznosci podzialow przy zadanej liczbie skupien
+##dla 3 skupien
 randEx2Ex3 <- randIndex(clusters2, kmeans3$cluster, F)
 randEx2Ex3
 randEx2Pattern <- randIndex(clusters2, pattern, F)
@@ -519,7 +500,7 @@ randEx3Pattern
 
 #analiza ukrytej alokacji Dirichlet'a
 
-#wï¿½ï¿½czenie bibliotek
+#wlaczenie bibliotek
 library(topicmodels)
 
 
@@ -543,7 +524,7 @@ lda <- LDA(
 perplexity <- perplexity(lda, dtmTfAll)
 results <- posterior(lda)
 
-#prezentacja tematï¿½w
+#prezentacja tematow
 par(mai = c(1,2,1,1))
 topic1 <- head(sort(results$terms[1,], decreasing = TRUE), 20)
 barplot(
@@ -551,7 +532,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 1",
-  xlab = "Prawdopodobieï¿½stwo 1",
+  xlab = "Prawdopodobienstwo 1",
   col = "blue"
 )
 topic2 <- head(sort(results$terms[2,], decreasing = TRUE), 20)
@@ -560,7 +541,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 2",
-  xlab = "Prawdopodobieï¿½stwo 2",
+  xlab = "Prawdopodobienstwo 2",
   col = "red"
 )
 topic3 <- head(sort(results$terms[3,], decreasing = TRUE), 20)
@@ -569,7 +550,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 3",
-  xlab = "Prawdopodobieï¿½stwo 3",
+  xlab = "Prawdopodobienstwo 3",
   col = "violet"
 )
 topic4 <- head(sort(results$terms[4,], decreasing = TRUE), 20)
@@ -578,7 +559,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 4",
-  xlab = "Prawdopodobieï¿½stwo 4",
+  xlab = "Prawdopodobienstwo 4",
   col = "lightskyblue"
 )
 topic5 <- head(sort(results$terms[5,], decreasing = TRUE), 20)
@@ -587,7 +568,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 5",
-  xlab = "Prawdopodobieï¿½stwo 5",
+  xlab = "Prawdopodobienstwo5",
   col = "darkseagreen"
 )
 
@@ -598,7 +579,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[1],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "darkseagreen"
 )
 
@@ -608,7 +589,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[2],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "darkseagreen"
 )
 
@@ -618,7 +599,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[3],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "darkseagreen"
 )
 
@@ -628,7 +609,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[4],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "darkseagreen"
 )
 
@@ -638,7 +619,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[5],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
 
@@ -648,7 +629,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[6],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "orange"
 )
 
@@ -658,7 +639,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[7],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
 
@@ -668,7 +649,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[8],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "orange"
 )
 
@@ -678,7 +659,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[9],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "violet"
 )
 
@@ -688,7 +669,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[10],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "violet"
 )
 
@@ -698,7 +679,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[11],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "violet"
 )
 
@@ -708,7 +689,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[12],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "violet"
 )
 
@@ -718,7 +699,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[13],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
 
@@ -728,7 +709,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[14],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
 
@@ -738,7 +719,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[15],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "orange"
 )
 
@@ -748,7 +729,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[16],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
 
@@ -758,7 +739,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[17],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "turquoise"
 )
 
@@ -768,7 +749,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[18],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "orange"
 )
 
@@ -778,7 +759,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[19],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "turquoise"
 )
 
@@ -788,7 +769,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = rownames(results$topics)[20],
-  xlab = "Prawdopodobieï¿½stwo",
+  xlab = "Prawdopodobienstwo",
   col = "turquoise"
 )
 
@@ -799,7 +780,7 @@ barplot(
 
 
 #P U N K T    8     (do ) 
-#wï¿½ï¿½czenie bibliotek
+#wlaczenie bibliotek
 library(wordcloud)
 
 
@@ -867,7 +848,7 @@ keywordsTf20 <- head(sort(dtmTfAllMatrix[20,], decreasing = T))
 keywordsTf20
 
 
-##waga tfidf jako miara waï¿½noï¿½ci sï¿½ï¿½w
+##waga tfidf jako miara waznosci slow
 keywordsTfidf1 <- head(sort(dtmTfidfBoundsMatrix[1,], decreasing = T))
 keywordsTfidf1
 
