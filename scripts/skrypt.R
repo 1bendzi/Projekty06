@@ -4,7 +4,7 @@ library (hunspell)
 library (stringr)
 
 #zmiana katalogu roboczego 
-workDir <- "G:\\R-Project06\\Projekty06"
+workDir <- "C:\\ProjektR\\Projekty06"
 setwd(workDir)
 
 
@@ -68,7 +68,7 @@ corpus <- tm_map(corpus, removeChar, "—")
 corpus <- tm_map(corpus, removeChar, "…")
 
 #wstepne przetwarzanie: lemantyzacja
-polish <- dictionary(lang="pl_PL")
+polish <- dictionary(lang="pl")
 lemmatize <- function(text) {
   simpleText <- str_trim(as.character(text))
   parsedText <- strsplit(simpleText, split = " ")
@@ -202,11 +202,11 @@ matrixFile <- paste(
   sep = "\\"
 )
 write.table(
- tdmTfidfAllMatrix,
- file = matrixFile,
- sep = ";",
- dec = ",",
- col.names = NA
+  tdmTfidfAllMatrix,
+  file = matrixFile,
+  sep = ";",
+  dec = ",",
+  col.names = NA
 )
 
 matrixFile1 <- paste(
@@ -274,7 +274,7 @@ plot(
   xlab="Wspó³rzêdna syntetyczna 1", 
   ylab="Wspó³rzêdna syntetyczna 2",
   main="Analiza g³ównych sk³adowych", 
-  col = "blue"
+  col = "red"
 )
 text(
   x, 
@@ -313,12 +313,7 @@ legend("bottom", legend, cex=.65, text.col = "blue")
 dev.off()
 
 
-
-
-
-
-
-# L S A    to generuje diagram, ale 1. sa jakie bledy w kodzie 2. nie wiem czy ten diagram wartosciowy
+# L S A 
 #za³adowanie bibliotek
 library(lsa)
 
@@ -332,14 +327,14 @@ lsa$sk #odpowiednik macierzy D, znaczenie sk³adowych
 #przygotowanie danych do wykresu
 coordTerms <- lsa$tk%*%diag(lsa$sk)
 coorDocs <- lsa$dk%*%diag(lsa$sk)
-#Linijke nizej trzeba zmienic! albo nie. cos z tym termsImportance sie robi. 
 
-# <- c("harry", "czarodziej", "dumbledore", "hermiona", "ron", "komnata", "powiedzieæ", "chcieæ", "dowiadywaæ", "albus", "syriusz", "lupin", "umbridge", "edmund", "kaspian", "³ucja", "czarownica", "piotr", "zuzanna", "aslana", "narnii", "baron", "dziecko", "wyspa", "bell", "edward", "wampir", "jacob")
 termsImportance <- diag(lsa$tk%*%diag(lsa$sk)%*%t(diag(lsa$sk))%*%t(lsa$tk))
+terms <- c("achilles", "troja", "itaka", "pryjam", "italia", "wiedzmin", "geralt", "ciri", "yennefer", "jaskier", "szlachta", "zagloba", "michal", "waszmosc", "wasc", "frodo", "mordor", "gandalf", "hobbit", "baggins", "telefon", "kosmicznej", "robot", "helikopter", "astronomii")
 importantTerms <- names(tail(sort(termsImportance),25))
-coordTerms <- coordTerms[terms,]
+
+#zale¿nie od preferencji wybrac mozna importantTerms jak i terms znalezione przez nas, gdy¿ jest ona bardziej wiarygodna
 coordTerms <- coordTerms[importantTerms,]
-legend <- paste(paste("d", 1:19, sep = ""), rownames(coorDocs), sep = "<-")
+legend <- paste(paste("d", 1:20, sep = ""), rownames(coorDocs), sep = "<-")
 x1 <- coorDocs[,1]
 y1 <- coorDocs[,2]
 x2 <- coordTerms[,1]
@@ -353,29 +348,30 @@ plot(
   xlim = c(-0.2,0.05),
   #ylim = c(,),
   pch = 1, 
-  col = "orange"
+  col = "blue"
 )
 points(
   x2, 
   y2, 
   pch = 2, 
-  col = "brown"
+  col = "red"
 )
 text(
   x1, 
   y1, 
-  paste("d", 1:19, sep = ""), 
-  col = "orange",
+  paste("d", 1:20, sep = ""), 
+  col = "blue",
   pos = 4
 )
 text(
   x2, 
   y2, 
   rownames(coordTerms), 
-  col = "brown",
+  col = "red",
   pos = 4
 )
-legend("bottomleft", legend, cex = 0.7, text.col = "orange")
+
+legend("topleft", legend, cex = 0.7, text.col = "blue")
 
 #eksport wykresu do pliku .png
 plotFile <- paste(
@@ -391,31 +387,31 @@ plot(
   xlim = c(-0.2,0.05),
   #ylim = c(,),
   pch = 1, 
-  col = "orange"
+  col = "blue"
 )
 points(
   x2, 
   y2, 
   pch = 2, 
-  col = "brown"
+  col = "red"
 )
 text(
   x1, 
   y1, 
-  paste("d", 1:19, sep = ""), 
-  col = "orange",
+  paste("d", 1:20, sep = ""), 
+  col = "blue",
   pos = 4
 )
 text(
   x2, 
   y2, 
   rownames(coordTerms), 
-  col = "brown",
+  col = "red",
   pos = 4
 )
-legend("bottomleft", legend, cex = 0.5, text.col = "orange")
-dev.off()
 
+legend("topleft", legend, cex = 0.7, text.col = "blue")
+dev.off()
 
 # PUNKT 6  (poki co wklejony kod, nic nie zmieniane)
 
@@ -517,7 +513,7 @@ randEx3Pattern
 
 
 
-#Punkt 7 (wklejony kod, nic nie zmieniane)
+#Punkt 7 (wklejony kod, nic nie zmieniane) LDA 
 
 #analiza ukrytej alokacji Dirichlet'a
 
@@ -528,6 +524,7 @@ library(topicmodels)
 
 #analiza ukrytej alokacji Dirichlet'a
 nWords <- ncol(dtmTfAll)
+# tyle ile mamy roznych dziedzin = 5 
 nTopics <- 5
 lda <- LDA(
   dtmTfAll,
@@ -539,6 +536,8 @@ lda <- LDA(
     iter = 3000
   )
 )
+
+#uzyta do oceny jakosci 
 perplexity <- perplexity(lda, dtmTfAll)
 results <- posterior(lda)
 
@@ -550,8 +549,8 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 1",
-  xlab = "Prawdopodobieñstwo",
-  col = "orange"
+  xlab = "Prawdopodobieñstwo 1",
+  col = "blue"
 )
 topic2 <- head(sort(results$terms[2,], decreasing = TRUE), 20)
 barplot(
@@ -559,8 +558,8 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 2",
-  xlab = "Prawdopodobieñstwo",
-  col = "turquoise"
+  xlab = "Prawdopodobieñstwo 2",
+  col = "red"
 )
 topic3 <- head(sort(results$terms[3,], decreasing = TRUE), 20)
 barplot(
@@ -568,7 +567,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 3",
-  xlab = "Prawdopodobieñstwo",
+  xlab = "Prawdopodobieñstwo 3",
   col = "violet"
 )
 topic4 <- head(sort(results$terms[4,], decreasing = TRUE), 20)
@@ -577,7 +576,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 4",
-  xlab = "Prawdopodobieñstwo",
+  xlab = "Prawdopodobieñstwo 4",
   col = "lightskyblue"
 )
 topic5 <- head(sort(results$terms[5,], decreasing = TRUE), 20)
@@ -586,7 +585,7 @@ barplot(
   horiz = TRUE,
   las = 1, 
   main = "Temat 5",
-  xlab = "Prawdopodobieñstwo",
+  xlab = "Prawdopodobieñstwo 5",
   col = "darkseagreen"
 )
 
@@ -598,7 +597,7 @@ barplot(
   las = 1, 
   main = rownames(results$topics)[4],
   xlab = "Prawdopodobieñstwo",
-  col = "orange"
+  col = "blue"
 )
 
 document11 <- results$topics[11,]
@@ -608,7 +607,7 @@ barplot(
   las = 1, 
   main = rownames(results$topics)[11],
   xlab = "Prawdopodobieñstwo",
-  col = "turquoise"
+  col = "red"
 )
 
 document17 <- results$topics[17,]
