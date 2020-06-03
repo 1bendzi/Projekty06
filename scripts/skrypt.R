@@ -14,7 +14,6 @@ library(wordcloud)
 library(topicmodels)
 
 #zmiana katalogu roboczego 
-
 workDir <- "G:\\R-Project06\\Projekty06"
 setwd(workDir)
 
@@ -233,20 +232,7 @@ write.table(
   col.names = NA
 )
 
-matrixFile2 <- paste(
-  outputDir, 
-  "tdmTfidfBounds(2,14).csv",
-  sep = "\\"
-)
-write.table(
-  tdmTfidfBoundsMatrix,
-  file = matrixFile1,
-  sep = ";",
-  dec = ",",
-  col.names = NA
-)
-
-#Redukcja wymiarow  -    PUNKT 5
+# Redukcja wymiarow - PUNKT 5
 # PCA - analiza glownych skladowych
 
 #analiza glownych skladowych
@@ -526,18 +512,9 @@ corrplot(clustersMatrix6)
 randEx1Ex3 <- randIndex(clusters1, kmeans3$cluster, F)
 randEx1Ex3
 
-
 #porownanie eksperymentu 2 i 3 
 randEx2Ex3 <- randIndex(clusters2, kmeans3$cluster, F)
 randEx2Ex3
-
-randEx1Pattern <- randIndex(clusters1, pattern, F)
-randEx1Pattern
-randEx2Pattern <- randIndex(clusters2, pattern, F)
-randEx2Pattern
-randEx3Pattern <- randIndex(kmeans3$cluster, pattern, F)
-randEx3Pattern
-
 
 #analiza ukrytej alokacji Dirichlet'a
 nWords <- ncol(dtmTfAll)
@@ -565,26 +542,26 @@ barplot(
   rev(topic1), 
   horiz = TRUE,
   las = 1, 
-  main = "Wiedzmin - Czas Pogardy",
-  xlab = "Prawdopodobienstwo 1",
-  col = "blue"
+  main = "Temat 1 - Lem",
+  xlab = "Prawdopodobienstwo",
+  col = "orange"
 )
 topic2 <- head(sort(results$terms[2,], decreasing = TRUE), 20)
 barplot(
   rev(topic2), 
   horiz = TRUE,
   las = 1, 
-  main = "Lem? - ",
-  xlab = "Prawdopodobienstwo 2",
-  col = "red"
+  main = "Temat 2- Antyk",
+  xlab = "Prawdopodobienstwo",
+  col = "turquoise"
 )
 topic3 <- head(sort(results$terms[3,], decreasing = TRUE), 20)
 barplot(
   rev(topic3), 
   horiz = TRUE,
   las = 1, 
-  main = "Antyk Eneida",
-  xlab = "Prawdopodobienstwo 3",
+  main = "Temat 3 - Sienkiewicz",
+  xlab = "Prawdopodobienstwo",
   col = "violet"
 )
 topic4 <- head(sort(results$terms[4,], decreasing = TRUE), 20)
@@ -592,8 +569,8 @@ barplot(
   rev(topic4), 
   horiz = TRUE,
   las = 1, 
-  main = "Sienkiewicz - Potop Tom drugi",
-  xlab = "Prawdopodobienstwo 4",
+  main = "Temat 4 - Wiedzmin",
+  xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
 topic5 <- head(sort(results$terms[5,], decreasing = TRUE), 20)
@@ -601,12 +578,12 @@ barplot(
   rev(topic5), 
   horiz = TRUE,
   las = 1, 
-  main = "Antyk - Iliada/Odyseja",
-  xlab = "Prawdopodobienstwo5",
+  main = "Temat 5 - Antyk",
+  xlab = "Prawdopodobienstwo",
   col = "darkseagreen"
 )
 
-#prezentacja dokument�w
+#prezentacja dokumentow
 document1 <- results$topics[1,]
 barplot(
   rev(document1), 
@@ -935,16 +912,107 @@ keywordsTfidf20 <- head(sort(dtmTfidfBoundsMatrix[20,], decreasing = T))
 keywordsTfidf20
 
 ##prawdopodobienstwo w LDA jako miara waznoscislow
-termsImportance1 <- c(results$topics[1,]%*%results$importanceTerms)
-names(termsImportance1) <- colnames(results$terms)
-keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
-keywordsLda1
 
 termsImportance1 <- c(results$topics[1,]%*%results$terms)
 names(termsImportance1) <- colnames(results$terms)
-keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
+keywordsLda1 <- head(sort(termsImportance1, decreasing = TRUE))
 keywordsLda1
 
+termsImportance2 <- c(results$topics[2,]%*%results$terms)
+names(termsImportance2) <- colnames(results$terms)
+keywordsLda2 <- head(sort(termsImportance2, decreasing = TRUE))
+keywordsLda2
+
+termsImportance3 <- c(results$topics[3,]%*%results$terms)
+names(termsImportance3) <- colnames(results$terms)
+keywordsLda3 <- head(sort(termsImportance3, decreasing = TRUE))
+keywordsLda3
+
+termsImportance4 <- c(results$topics[4,]%*%results$terms)
+names(termsImportance4) <- colnames(results$terms)
+keywordsLda4 <- head(sort(termsImportance4, decreasing = TRUE))
+keywordsLda4
+
+termsImportance5 <- c(results$topics[5,]%*%results$terms)
+names(termsImportance5) <- colnames(results$terms)
+keywordsLda5 <- head(sort(termsImportance5, decreasing = TRUE))
+keywordsLda5
+
+termsImportance6 <- c(results$topics[6,]%*%results$terms)
+names(termsImportance6) <- colnames(results$terms)
+keywordsLda6 <- head(sort(termsImportance6, decreasing = TRUE))
+keywordsLda6
+
+termsImportance7 <- c(results$topics[7,]%*%results$terms)
+names(termsImportance7) <- colnames(results$terms)
+keywordsLda7 <- head(sort(termsImportance7, decreasing = TRUE))
+keywordsLda7
+
+
+termsImportance8 <- c(results$topics[8,]%*%results$terms)
+names(termsImportance8) <- colnames(results$terms)
+keywordsLda8 <- head(sort(termsImportance8, decreasing = TRUE))
+keywordsLda8
+
+termsImportance9 <- c(results$topics[9,]%*%results$terms)
+names(termsImportance9) <- colnames(results$terms)
+keywordsLda9 <- head(sort(termsImportance9, decreasing = TRUE))
+keywordsLda9
+
+termsImportance10 <- c(results$topics[10,]%*%results$terms)
+names(termsImportance10) <- colnames(results$terms)
+keywordsLda10 <- head(sort(termsImportance10, decreasing = TRUE))
+keywordsLda10
+
+termsImportance11 <- c(results$topics[11,]%*%results$terms)
+names(termsImportance11) <- colnames(results$terms)
+keywordsLda11 <- head(sort(termsImportance11, decreasing = TRUE))
+keywordsLda11
+
+termsImportance12 <- c(results$topics[12,]%*%results$terms)
+names(termsImportance12) <- colnames(results$terms)
+keywordsLda12 <- head(sort(termsImportance12, decreasing = TRUE))
+keywordsLda12
+
+termsImportance13 <- c(results$topics[13,]%*%results$terms)
+names(termsImportance13) <- colnames(results$terms)
+keywordsLda13 <- head(sort(termsImportance13, decreasing = TRUE))
+keywordsLda13
+
+termsImportance14 <- c(results$topics[14,]%*%results$terms)
+names(termsImportance14) <- colnames(results$terms)
+keywordsLda14 <- head(sort(termsImportance14, decreasing = TRUE))
+keywordsLda14
+
+termsImportance15 <- c(results$topics[15,]%*%results$terms)
+names(termsImportance15) <- colnames(results$terms)
+keywordsLda15 <- head(sort(termsImportance15, decreasing = TRUE))
+keywordsLda15
+
+termsImportance16 <- c(results$topics[16,]%*%results$terms)
+names(termsImportance16) <- colnames(results$terms)
+keywordsLda16 <- head(sort(termsImportance16, decreasing = TRUE))
+keywordsLda16
+
+termsImportance17 <- c(results$topics[17,]%*%results$terms)
+names(termsImportance17) <- colnames(results$terms)
+keywordsLda17 <- head(sort(termsImportance17, decreasing = TRUE))
+keywordsLda17
+
+termsImportance18 <- c(results$topics[18,]%*%results$terms)
+names(termsImportance18) <- colnames(results$terms)
+keywordsLda18 <- head(sort(termsImportance18, decreasing = TRUE))
+keywordsLda18
+
+termsImportance19 <- c(results$topics[19,]%*%results$terms)
+names(termsImportance19) <- colnames(results$terms)
+keywordsLda19 <- head(sort(termsImportance19, decreasing = TRUE))
+keywordsLda19
+
+termsImportance20 <- c(results$topics[20,]%*%results$terms)
+names(termsImportance20) <- colnames(results$terms)
+keywordsLda20 <- head(sort(termsImportance20, decreasing = TRUE))
+keywordsLda20
 
 ##chmury tagow
 par(mai = c(0,0,0,0))
