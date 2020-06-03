@@ -3,6 +3,15 @@ library(tm)
 library (hunspell)
 library (stringr)
 library(lsa)
+#punkt 6
+library(proxy)
+library(dendextend)
+library(corrplot)
+library(flexclust)
+#punkt 8 
+library(wordcloud)
+#analiza ukrytej alokacji Dirichlet'a
+library(topicmodels)
 
 #zmiana katalogu roboczego 
 
@@ -237,8 +246,6 @@ write.table(
   col.names = NA
 )
 
-
-
 #Redukcja wymiarow  -    PUNKT 5
 # PCA - analiza glownych skladowych
 
@@ -396,14 +403,7 @@ text(
 legend("topleft", legend, cex = 0.7, text.col = "blue")
 dev.off()
 
-# PUNKT 6  
-
-#wlaczenie bibliotek
-library(proxy)
-library(dendextend)
-library(corrplot)
-library(flexclust)
-
+# PUNKT 6
 #analiza skupien
 ##metoda hierarchiczna
 #parametry metody:
@@ -538,12 +538,6 @@ randEx2Pattern
 randEx3Pattern <- randIndex(kmeans3$cluster, pattern, F)
 randEx3Pattern
 
-
-
-#analiza ukrytej alokacji Dirichlet'a
-
-#wlaczenie bibliotek
-library(topicmodels)
 
 #analiza ukrytej alokacji Dirichlet'a
 nWords <- ncol(dtmTfAll)
@@ -814,11 +808,9 @@ barplot(
 )
 
 
-#P U N K T    8 
-#wlaczenie bibliotek
-library(wordcloud)
+#wagi s³ow 
 
-#dla pierwszego dokumentu
+
 ##waga tf jako miara waznosci slow
 keywordsTf1 <- head(sort(dtmTfAllMatrix[1,], decreasing = T))
 keywordsTf1
@@ -943,7 +935,7 @@ keywordsTfidf20 <- head(sort(dtmTfidfBoundsMatrix[20,], decreasing = T))
 keywordsTfidf20
 
 ##prawdopodobienstwo w LDA jako miara waznoscislow
-termsImportance1 <- c(results$topics[1,]%*%results$terms)
+termsImportance1 <- c(results$topics[1,]%*%results$importanceTerms)
 names(termsImportance1) <- colnames(results$terms)
 keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
 keywordsLda1
