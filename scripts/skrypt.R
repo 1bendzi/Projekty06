@@ -12,6 +12,8 @@ library(flexclust)
 library(wordcloud)
 #analiza ukrytej alokacji Dirichlet'a
 library(topicmodels)
+#algorytm rake
+library(slowraker)
 
 #zmiana katalogu roboczego 
 workDir <- "G:\\R-Project06\\Projekty06"
@@ -1075,4 +1077,17 @@ wordcloud(corpus[19], max.words = 200, colors = brewer.pal(8,"PuOr"))
 par(mai = c(0,0,0,0))
 wordcloud(corpus[20], max.words = 200, colors = brewer.pal(8,"PuOr"))
 
+
+##algorytm RAKE
+text1 <- as.character(corpus[1])
+rake1 <- slowrake(txt = text1, stem = FALSE, stop_pos = NULL)
+print(rake1[[1]])
+
+text2 <- as.character(corpus[10])
+rake2 <- slowrake(txt = text2, stem = FALSE, stop_pos = NULL)
+print(rake2[[1]])
+
+text3 <- as.character(corpus[20])
+rake3 <- slowrake(txt = text3, stem = FALSE, stop_pos = NULL)
+print(rake3[[1]])
 
