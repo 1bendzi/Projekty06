@@ -95,6 +95,9 @@ preprocessedDir <- paste(
 dir.create(preprocessedDir, showWarnings = FALSE)
 writeCorpus(corpus, path = preprocessedDir)
 
+inspect(corpus)
+
+#analiza glownych skladowych - pca 
 
 #Macierz czestosci - PUNKT 4          
 #utworzenie korpusu dokmentow
@@ -415,7 +418,7 @@ library(flexclust)
 # najelpsze metody : cosine i ward.D2
 
 par(mai = c(1,2,1,1))  #marginesy 
-nDocuments = 19
+nDocuments = 20
 #eksperyment 1
 distMatrix1 <- dist(dtmTfAllMatrix, method = "euclidean") #te metode mozemy zmienic
 hclust1 <- hclust(distMatrix1, method = "ward.D2") #te metode mozemy zmienic
@@ -432,7 +435,7 @@ corrplot(clustersMatrix1)
 dendrogram1 <- as.dendrogram(hclust1)
 coloredDendrogram1 <- color_branches(dendrogram1, h = 100)
 plot(coloredDendrogram1)
-#alternatywne wersje dendrogramï¿½w
+#alternatywne wersje dendrogramow
 par(mar=c(16,5,1,1), mgp=c(4,2.5,0))
 coloredDendrogram1%>%set("labels_cex", 0.8)%>%plot()
 par(mar=c(5,1,1,16), mgp=c(4,2.5,0))
@@ -455,6 +458,12 @@ corrplot(clustersMatrix2)
 dendrogram2 <- as.dendrogram(hclust2)
 coloredDendrogram2 <- color_branches(dendrogram2, h = 1.2)
 plot(coloredDendrogram2)
+#alternatywne wersje dendrogramu2
+par(mar=c(16,5,1,1), mgp=c(4,2.5,0))
+coloredDendrogram2%>%set("labels_cex", 0.8)%>%plot()
+par(mar=c(5,1,1,16), mgp=c(4,2.5,0))
+coloredDendrogram2%>%set("labels_cex", 0.9)%>%plot(horiz = T)
+par(mai = c(1,2,1,1))
 
 #porownanie wynikow eksperymentow
 Bk_plot(
@@ -483,14 +492,50 @@ for (i in 1:nDocuments) {
 }
 corrplot(clustersMatrix3)
 
+#eksperyment 4
+nClusters4 <- 5
+kmeans4 <- kmeans(dtmTfidfBounds, centers = nClusters4)
+clustersMatrix4 <- matrix(0,nDocuments,nClusters4)
+rownames(clustersMatrix4) <- names(kmeans4$cluster)
+for (i in 1:nDocuments) {
+  clustersMatrix4[i, kmeans4$cluster[i]] <- 1
+}
+corrplot(clustersMatrix4)
+
+#podzia³ obiektów na skupienia przy zadanej liczbie klas - metoda hierarchiczna
+#eksperyment 5
+clusters5 <- cutree(hclust1, k = 4)
+clustersMatrix5 <- matrix(0, 20, 4)
+rownames(clustersMatrix5) <- names(clusters5)
+for (i in 1:20){
+  clustersMatrix5[i,clusters5[i]] <- 1
+}
+corrplot(clustersMatrix5)
+
+#eksperyment 6
+clusters6 <- cutree(hclust1, k = 5)
+clustersMatrix6 <- matrix(0, 20, 4)
+rownames(clustersMatrix6) <- names(clusters6)
+for (i in 1:20){
+  clustersMatrix6[i,clusters6[i]] <- 1
+}
+corrplot(clustersMatrix6)
+
+
 #wspolczynnik zbieznosci podzialow przy zadanej liczbie skupien
 ##dla 3 skupien
+randEx1Ex3 <- randIndex(clusters1, kmeans3$cluster, F)
+randEx1Ex3
+
 randEx2Ex3 <- randIndex(clusters2, kmeans3$cluster, F)
 randEx2Ex3
+
 randEx2Pattern <- randIndex(clusters2, pattern, F)
 randEx2Pattern
 randEx3Pattern <- randIndex(kmeans3$cluster, pattern, F)
 randEx3Pattern
+
+
 
 
 #Punkt 7 (wklejony kod, nic nie zmieniane) LDA 
@@ -774,6 +819,7 @@ barplot(
 
 
 
+
 #P U N K T    8     (do ) 
 #wlaczenie bibliotek
 library(wordcloud)
@@ -977,3 +1023,5 @@ wordcloud(corpus[19], max.words = 200, colors = brewer.pal(8,"PuOr"))
 
 par(mai = c(0,0,0,0))
 wordcloud(corpus[20], max.words = 200, colors = brewer.pal(8,"PuOr"))
+
+
