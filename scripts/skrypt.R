@@ -312,13 +312,11 @@ lsa$sk #odpowiednik macierzy D, znaczenie sk³adowych
 coordTerms <- lsa$tk%*%diag(lsa$sk)
 coorDocs <- lsa$dk%*%diag(lsa$sk)
 
-
-terms <- c("achilles", "troja", "itaka", "pryjam", "italia", "wiedŸmin", "geralt", "ciri", "yennefer", "jaskier", "szlachta", "zag³oba", "micha³", "waszmoœæ", "waœæ", "frodo", "mordor", "gandalf", "saurona", "baggins", "telefon", "kosmicznej", "robot", "helikopter", "astronomii")
 termsImportance <- diag(lsa$tk%*%diag(lsa$sk)%*%t(diag(lsa$sk))%*%t(lsa$tk))
 importantTerms <- names(tail(sort(termsImportance),25))
 
 #zale¿nie od preferencji wybrac mozna importantTerms jak i terms znalezione przez nas, gdy¿ jest ona bardziej wiarygodna
-coordTerms <- coordTerms[terms,]
+coordTerms <- coordTerms[importantTerms,]
 legend <- paste(paste("d", 1:20, sep = ""), rownames(coorDocs), sep = "<-")
 x1 <- coorDocs[,1]
 y1 <- coorDocs[,2]
@@ -513,8 +511,8 @@ for (i in 1:20){
 corrplot(clustersMatrix5)
 
 #eksperyment 6
-clusters6 <- cutree(hclust1, k = 5)
-clustersMatrix6 <- matrix(0, 20, 4)
+clusters6 <- cutree(hclust1, k = 3)
+clustersMatrix6 <- matrix(0, 20, 3)
 rownames(clustersMatrix6) <- names(clusters6)
 for (i in 1:20){
   clustersMatrix6[i,clusters6[i]] <- 1
@@ -523,22 +521,24 @@ corrplot(clustersMatrix6)
 
 
 #wspolczynnik zbieznosci podzialow przy zadanej liczbie skupien
-##dla 3 skupien
+
+#porownanie experymentu 1 i 3 
 randEx1Ex3 <- randIndex(clusters1, kmeans3$cluster, F)
 randEx1Ex3
 
+
+#porownanie eksperymentu 2 i 3 
 randEx2Ex3 <- randIndex(clusters2, kmeans3$cluster, F)
 randEx2Ex3
 
+randEx1Pattern <- randIndex(clusters1, pattern, F)
+randEx1Pattern
 randEx2Pattern <- randIndex(clusters2, pattern, F)
 randEx2Pattern
 randEx3Pattern <- randIndex(kmeans3$cluster, pattern, F)
 randEx3Pattern
 
 
-
-
-#Punkt 7 (wklejony kod, nic nie zmieniane) LDA 
 
 #analiza ukrytej alokacji Dirichlet'a
 
@@ -814,17 +814,9 @@ barplot(
 )
 
 
-
-
-
-
-
-
-#P U N K T    8     (do ) 
+#P U N K T    8 
 #wlaczenie bibliotek
 library(wordcloud)
-
-
 
 #dla pierwszego dokumentu
 ##waga tf jako miara waznosci slow
@@ -951,7 +943,6 @@ keywordsTfidf20 <- head(sort(dtmTfidfBoundsMatrix[20,], decreasing = T))
 keywordsTfidf20
 
 ##prawdopodobienstwo w LDA jako miara waznoscislow
-#(tu dopisze jak bedziemy mieli ogarniete LDA, bo nie bardzo moge to wytestowac teraz)
 termsImportance1 <- c(results$topics[1,]%*%results$terms)
 names(termsImportance1) <- colnames(results$terms)
 keywordsLda1 <- head(sort(termsImportance1, decreasing = T))
