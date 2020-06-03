@@ -535,7 +535,7 @@ barplot(
   rev(topic2), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 2",
+  main = "Lem? - ",
   xlab = "Prawdopodobienstwo 2",
   col = "red"
 )
@@ -544,7 +544,7 @@ barplot(
   rev(topic3), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 3",
+  main = "Antyk Eneida",
   xlab = "Prawdopodobienstwo 3",
   col = "violet"
 )
@@ -553,7 +553,7 @@ barplot(
   rev(topic4), 
   horiz = TRUE,
   las = 1, 
-  main = "Sienkiewicz - Zag³oba",
+  main = "Sienkiewicz - Potop Tom drugi",
   xlab = "Prawdopodobienstwo 4",
   col = "lightskyblue"
 )
@@ -562,7 +562,7 @@ barplot(
   rev(topic5), 
   horiz = TRUE,
   las = 1, 
-  main = "Antyk - ",
+  main = "Antyk - Iliada/Odyseja",
   xlab = "Prawdopodobienstwo5",
   col = "darkseagreen"
 )
