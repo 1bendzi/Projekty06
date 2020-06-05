@@ -228,7 +228,7 @@ matrixFile2 <- paste(
 )
 write.table(
   tdmTfidfBoundsMatrix,
-  file = matrixFile1,
+  file = matrixFile2,
   sep = ";",
   dec = ",",
   col.names = NA
