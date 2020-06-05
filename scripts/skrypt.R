@@ -194,7 +194,7 @@ tdmTfidfBoundsMatrix <- as.matrix(tdmTfidfBounds)
 dtmTfidfBoundsMatrix <- as.matrix(dtmTfidfBounds)
 dtmTfBoundsMAtrix <- as.matrix(dtmTfBounds)
 
-#eksport macirzy czestosci do pliku .csv
+#eksport 3 macirzy czestosci do pliku .csv
 matrixFile <- paste(
   outputDir, 
   "tdmTfidf.csv",
