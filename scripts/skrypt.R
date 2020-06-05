@@ -538,13 +538,14 @@ perplexity <- perplexity(lda, dtmTfAll)
 results <- posterior(lda)
 
 #prezentacja tematow
+#prezentacja tematów
 par(mai = c(1,2,1,1))
 topic1 <- head(sort(results$terms[1,], decreasing = TRUE), 20)
 barplot(
   rev(topic1), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 1 - Lem",
+  main = "Temat 1 - Stanis³aw Lem / Tolkien",
   xlab = "Prawdopodobienstwo",
   col = "orange"
 )
@@ -553,7 +554,7 @@ barplot(
   rev(topic2), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 2- Antyk",
+  main = "Temat 2 - WiedŸmin",
   xlab = "Prawdopodobienstwo",
   col = "turquoise"
 )
@@ -562,7 +563,7 @@ barplot(
   rev(topic3), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 3 - Sienkiewicz",
+  main = "Temat 3 - Sienkiewicz - Trylogia",
   xlab = "Prawdopodobienstwo",
   col = "violet"
 )
@@ -571,7 +572,7 @@ barplot(
   rev(topic4), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 4 - Wiedzmin",
+  main = "Temat 4 - Tolkien / Stanis³aw Lem",
   xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
@@ -585,7 +586,7 @@ barplot(
   col = "darkseagreen"
 )
 
-#prezentacja dokumentow
+#prezentacja dokumentów
 document1 <- results$topics[1,]
 barplot(
   rev(document1), 
@@ -788,8 +789,6 @@ barplot(
 
 
 #wagi s³ow 
-
-
 ##waga tf jako miara waznosci slow
 keywordsTf1 <- head(sort(dtmTfAllMatrix[1,], decreasing = T))
 keywordsTf1
