@@ -68,12 +68,12 @@ corpus <- tm_map(corpus, stripWhitespace)
 removeChar <- content_transformer(function(x,pattern) gsub(pattern, "", x))
 corpus <- tm_map(corpus, removeChar, intToUtf8(8722))
 corpus <- tm_map(corpus, removeChar, intToUtf8(190))
-corpus <- tm_map(corpus, removeChar, "„")
-corpus <- tm_map(corpus, removeChar, "”")
+corpus <- tm_map(corpus, removeChar, "ï¿½")
+corpus <- tm_map(corpus, removeChar, "ï¿½")
 corpus <- tm_map(corpus, removeChar, "\"")
-corpus <- tm_map(corpus, removeChar, "«")
-corpus <- tm_map(corpus, removeChar, "—")
-corpus <- tm_map(corpus, removeChar, "…")
+corpus <- tm_map(corpus, removeChar, "ï¿½")
+corpus <- tm_map(corpus, removeChar, "ï¿½")
+corpus <- tm_map(corpus, removeChar, "ï¿½")
 
 #wstepne przetwarzanie: lemantyzacja
 polish <- dictionary(lang="pl_PL")
@@ -95,7 +95,7 @@ cutExtensions <- function(document){
   return(document)
 }
 corpus <- tm_map(corpus, cutExtensions)
-#eksport korpusu przetworzonego do plików tekstowych
+#eksport korpusu przetworzonego do plikï¿½w tekstowych
 preprocessedDir <- paste(
   outputDir,
   "\\",
@@ -255,9 +255,9 @@ plot(
   y,
   xlim = c(-0.30,0.25),
   ylim = c(-0.08, 0.1),
-  xlab="Wspó³rzêdna syntetyczna 1", 
-  ylab="Wspó³rzêdna syntetyczna 2",
-  main="Analiza g³ównych sk³adowych", 
+  xlab="Wspï¿½rzï¿½dna syntetyczna 1", 
+  ylab="Wspï¿½rzï¿½dna syntetyczna 2",
+  main="Analiza gï¿½ï¿½wnych skï¿½adowych", 
   col = "red"
 )
 text(
@@ -281,9 +281,9 @@ plot(
   x,
   y,
   ylim = c(-0.25,0.25),
-  xlab="Wspó³rzêdna syntetyczna 1", 
-  ylab="Wspó³rzêdna syntetyczna 2",
-  main="Analiza g³ównych sk³adowych", 
+  xlab="Wspï¿½rzï¿½dna syntetyczna 1", 
+  ylab="Wspï¿½rzï¿½dna syntetyczna 2",
+  main="Analiza gï¿½ï¿½wnych skï¿½adowych", 
   col = "blue"
 )
 text(
@@ -299,19 +299,19 @@ dev.off()
 # L S A 
 #analiza ukrytych wymiarow semantycznych (dekompozycja wg. wartosci osobliwych)
 lsa <- lsa(tdmTfidfBoundsMatrix)
-lsa$tk #odpowiednik macierzy U, wspó³rzêdne wyrazów
-lsa$dk #odpowiednik macierzy V, wspó³rzêdne dokumentów
-lsa$sk #odpowiednik macierzy D, znaczenie sk³adowych
+lsa$tk #odpowiednik macierzy U, wspï¿½rzï¿½dne wyrazï¿½w
+lsa$dk #odpowiednik macierzy V, wspï¿½rzï¿½dne dokumentï¿½w
+lsa$sk #odpowiednik macierzy D, znaczenie skï¿½adowych
 
 #przygotowanie danych do wykresu
 coordTerms <- lsa$tk%*%diag(lsa$sk)
 coorDocs <- lsa$dk%*%diag(lsa$sk)
 
 termsImportance <- diag(lsa$tk%*%diag(lsa$sk)%*%t(diag(lsa$sk))%*%t(lsa$tk))
-importantTerms <- names(tail(sort(termsImportance),25))
+terms <- names(tail(sort(termsImportance),25))
 
-#zale¿nie od preferencji wybrac mozna importantTerms jak i terms znalezione przez nas, gdy¿ jest ona bardziej wiarygodna
-coordTerms <- coordTerms[importantTerms,]
+#zaleï¿½nie od preferencji wybrac mozna terms jak i terms znalezione przez nas, gdyï¿½ jest ona bardziej wiarygodna
+coordTerms <- coordTerms[terms,]
 legend <- paste(paste("d", 1:20, sep = ""), rownames(coorDocs), sep = "<-")
 x1 <- coorDocs[,1]
 y1 <- coorDocs[,2]
@@ -488,7 +488,7 @@ for (i in 1:nDocuments) {
 }
 corrplot(clustersMatrix4)
 
-#podzia³ obiektów na skupienia przy zadanej liczbie klas - metoda hierarchiczna
+#podziaï¿½ obiektï¿½w na skupienia przy zadanej liczbie klas - metoda hierarchiczna
 #eksperyment 5
 clusters5 <- cutree(hclust1, k = 4)
 clustersMatrix5 <- matrix(0, 20, 4)
@@ -538,14 +538,14 @@ perplexity <- perplexity(lda, dtmTfAll)
 results <- posterior(lda)
 
 #prezentacja tematow
-#prezentacja tematów
+#prezentacja tematï¿½w
 par(mai = c(1,2,1,1))
 topic1 <- head(sort(results$terms[1,], decreasing = TRUE), 20)
 barplot(
   rev(topic1), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 1 - Stanis³aw Lem / Tolkien",
+  main = "Temat 1 - Stanisï¿½aw Lem / Tolkien",
   xlab = "Prawdopodobienstwo",
   col = "orange"
 )
@@ -554,7 +554,7 @@ barplot(
   rev(topic2), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 2 - WiedŸmin",
+  main = "Temat 2 - Wiedï¿½min",
   xlab = "Prawdopodobienstwo",
   col = "turquoise"
 )
@@ -572,7 +572,7 @@ barplot(
   rev(topic4), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 4 - Tolkien / Stanis³aw Lem",
+  main = "Temat 4 - Tolkien / Stanisï¿½aw Lem",
   xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
@@ -586,7 +586,7 @@ barplot(
   col = "darkseagreen"
 )
 
-#prezentacja dokumentów
+#prezentacja dokumentï¿½w
 document1 <- results$topics[1,]
 barplot(
   rev(document1), 
@@ -788,7 +788,7 @@ barplot(
 )
 
 
-#wagi s³ow 
+#wagi sï¿½ow 
 ##waga tf jako miara waznosci slow
 keywordsTf1 <- head(sort(dtmTfAllMatrix[1,], decreasing = T))
 keywordsTf1
@@ -948,7 +948,6 @@ termsImportance7 <- c(results$topics[7,]%*%results$terms)
 names(termsImportance7) <- colnames(results$terms)
 keywordsLda7 <- head(sort(termsImportance7, decreasing = TRUE))
 keywordsLda7
-
 
 termsImportance8 <- c(results$topics[8,]%*%results$terms)
 names(termsImportance8) <- colnames(results$terms)
