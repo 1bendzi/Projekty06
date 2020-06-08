@@ -3,12 +3,10 @@ library(tm)
 library (hunspell)
 library (stringr)
 library(lsa)
-#punkt 6
 library(proxy)
 library(dendextend)
 library(corrplot)
 library(flexclust)
-#punkt 8 
 library(wordcloud)
 #analiza ukrytej alokacji Dirichlet'a
 library(topicmodels)
@@ -95,7 +93,7 @@ cutExtensions <- function(document){
   return(document)
 }
 corpus <- tm_map(corpus, cutExtensions)
-#eksport korpusu przetworzonego do plik�w tekstowych
+#eksport korpusu przetworzonego do plikow tekstowych
 preprocessedDir <- paste(
   outputDir,
   "\\",
@@ -107,9 +105,7 @@ writeCorpus(corpus, path = preprocessedDir)
 
 inspect(corpus)
 
-#analiza glownych skladowych - pca 
-
-#Macierz czestosci - PUNKT 4          
+#Macierz czestosci        
 #utworzenie korpusu dokmentow
 corpusDir <- paste(
   inputDir, 
@@ -234,7 +230,7 @@ write.table(
   col.names = NA
 )
 
-# Redukcja wymiarow - PUNKT 5
+# Redukcja wymiarow 
 # PCA - analiza glownych skladowych
 
 #analiza glownych skladowych
@@ -391,7 +387,6 @@ text(
 legend("topleft", legend, cex = 0.7, text.col = "blue")
 dev.off()
 
-# PUNKT 6
 #analiza skupien
 ##metoda hierarchiczna
 #parametry metody:
@@ -401,15 +396,14 @@ dev.off()
 # 2. miara odleglosci (euclidean, jaccard, cosine)
 # 3. sposob wyznaczania odleglosci pomiedzy skupieniami (single, complete, ward.D2)
 
-# najelpsze metody : cosine i ward.D2
 
-par(mai = c(1,2,1,1))  #marginesy 
+par(mai = c(1,2,1,1)) 
 nDocuments = 20
 #eksperyment 1
-distMatrix1 <- dist(dtmTfAllMatrix, method = "euclidean") #te metode mozemy zmienic
-hclust1 <- hclust(distMatrix1, method = "ward.D2") #te metode mozemy zmienic
+distMatrix1 <- dist(dtmTfAllMatrix, method = "euclidean") 
+hclust1 <- hclust(distMatrix1, method = "ward.D2")
 plot(hclust1)
-barplot(hclust1$height, names.arg = 18:1) # po tym okreslic ile nClusters 
+barplot(hclust1$height, names.arg = 18:1)
 nClusters1 = 5
 clusters1 <- cutree(hclust1, k=nClusters1)
 clustersMatrix1 <- matrix(0,nDocuments,nClusters1)
@@ -538,14 +532,13 @@ perplexity <- perplexity(lda, dtmTfAll)
 results <- posterior(lda)
 
 #prezentacja tematow
-#prezentacja temat�w
 par(mai = c(1,2,1,1))
 topic1 <- head(sort(results$terms[1,], decreasing = TRUE), 20)
 barplot(
   rev(topic1), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 1 - Stanis�aw Lem / Tolkien",
+  main = "Temat 1 - Stanislaw Lem / Tolkien",
   xlab = "Prawdopodobienstwo",
   col = "orange"
 )
@@ -554,7 +547,7 @@ barplot(
   rev(topic2), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 2 - Wied�min",
+  main = "Temat 2 - Wiedzmin",
   xlab = "Prawdopodobienstwo",
   col = "turquoise"
 )
@@ -572,7 +565,7 @@ barplot(
   rev(topic4), 
   horiz = TRUE,
   las = 1, 
-  main = "Temat 4 - Tolkien / Stanis�aw Lem",
+  main = "Temat 4 - Tolkien / Stanislaw Lem",
   xlab = "Prawdopodobienstwo",
   col = "lightskyblue"
 )
@@ -586,7 +579,7 @@ barplot(
   col = "darkseagreen"
 )
 
-#prezentacja dokument�w
+#prezentacja dokumentow
 document1 <- results$topics[1,]
 barplot(
   rev(document1), 
@@ -787,8 +780,6 @@ barplot(
   col = "turquoise"
 )
 
-
-#wagi s�ow 
 ##waga tf jako miara waznosci slow
 keywordsTf1 <- head(sort(dtmTfAllMatrix[1,], decreasing = T))
 keywordsTf1
@@ -912,7 +903,7 @@ keywordsTfidf19
 keywordsTfidf20 <- head(sort(dtmTfidfBoundsMatrix[20,], decreasing = T))
 keywordsTfidf20
 
-##prawdopodobienstwo w LDA jako miara waznoscislow
+##prawdopodobienstwo w LDA jako miara waznosci slow
 
 termsImportance1 <- c(results$topics[1,]%*%results$terms)
 names(termsImportance1) <- colnames(results$terms)
